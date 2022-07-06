@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "kilns",
+  "version": "1.0.0",
+
+  "name": "Kilns",
+  "description": "This is an example description! Tell everyone what your mod is about!",
+  "authors": [
+    "aqario"
+  ],
+  "contact": {
+    "sources": "https://github.com/aqariio/kilns"
+  },
+
+  "license": "MIT",
+  "icon": "assets/kilns/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "aqario.kilns.Kilns"
+    ],
+    "client": [
+      "aqario.kilns.KilnsClient"
+    ]
+  },
+  "mixins": [
+    "kilns.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.6",
+    "fabric": "*",
+    "minecraft": "~1.19",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
