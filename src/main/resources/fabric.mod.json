@@ -1,31 +1,31 @@
 {
   "schemaVersion": 1,
-  "id": "kilns",
+  "id": "isles",
   "version": "1.0.0",
 
-  "name": "Kilns",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Isles",
+  "description": "Isles SMP Mod",
   "authors": [
     "aqario"
   ],
   "contact": {
-    "sources": "https://github.com/aqariio/kilns"
+    "sources": "https://github.com/aqariio/isles"
   },
 
   "license": "MIT",
-  "icon": "assets/kilns/icon.png",
+  "icon": "assets/isles/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "aqario.kilns.Kilns"
+      "aqario.isles.Isles"
     ],
     "client": [
-      "aqario.kilns.KilnsClient"
+      "aqario.isles.IslesClient"
     ]
   },
   "mixins": [
-    "kilns.mixins.json"
+    "isles.mixins.json"
   ],
 
   "depends": {
