@@ -69,7 +69,7 @@ implements Vanishable {
         if (!world.isClient) {
             stack.damage(1, playerEntity, p -> p.sendToolBreakStatus(user.getActiveHand()));
             ShurikenEntity shurikenEntity = new ShurikenEntity(world, playerEntity, stack);
-            shurikenEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0f, 2.5f + 0.5f, 1.0f);
+            shurikenEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0f, 3.5f + 0.5f, 1.0f);
                 if (playerEntity.getAbilities().creativeMode) {
                     shurikenEntity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                 }

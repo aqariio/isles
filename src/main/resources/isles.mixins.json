@@ -4,9 +4,10 @@
   "package": "aqario.isles.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "EnchantmentMixin"
   ],
   "client": [
-    "ExampleMixin"
+    "ItemRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
