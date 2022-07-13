@@ -1,3 +1,5 @@
 {
-  "item.isles.shuriken": "Shuriken"
+  "item.isles.shuriken": "Shuriken",
+  "entity.isles.shuriken": "Shuriken",
+  "isles.subtitles.item.shuriken.hit": "Shuriken hits"
 }

@@ -1,0 +1,8 @@
+{
+  "item.shuriken.hit": {
+    "sounds": [
+      "isles:item/shuriken/hit"
+    ],
+    "subtitle": "isles.subtitles.item.shuriken.hit"
+  }
+}

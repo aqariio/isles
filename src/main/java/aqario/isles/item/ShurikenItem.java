@@ -1,21 +1,26 @@
 package aqario.isles.item;
 
+import aqario.isles.entity.ShurikenEntity;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.Vanishable;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.stat.Stats;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -52,15 +57,29 @@ implements Vanishable {
     }
 
     @Override
-    public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
-        if (state.isOf(Blocks.COBWEB)) {
-            return 15.0f;
+    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+        if (!(user instanceof PlayerEntity)) {
+            return;
         }
-        Material material = state.getMaterial();
-        if (material == Material.PLANT || material == Material.REPLACEABLE_PLANT || state.isIn(BlockTags.LEAVES) || material == Material.GOURD) {
-            return 1.5f;
+        PlayerEntity playerEntity = (PlayerEntity)user;
+        int i = this.getMaxUseTime(stack) - remainingUseTicks;
+        if (i < 10) {
+            return;
         }
-        return 1.0f;
+        if (!world.isClient) {
+            stack.damage(1, playerEntity, p -> p.sendToolBreakStatus(user.getActiveHand()));
+            ShurikenEntity shurikenEntity = new ShurikenEntity(world, playerEntity, stack);
+            shurikenEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0f, 2.5f + 0.5f, 1.0f);
+                if (playerEntity.getAbilities().creativeMode) {
+                    shurikenEntity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
+                }
+                world.spawnEntity(shurikenEntity);
+                world.playSoundFromEntity(null, shurikenEntity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                if (!playerEntity.getAbilities().creativeMode) {
+                    playerEntity.getInventory().removeOne(stack);
+            }
+        }
+        playerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
     }
 
     @Override
@@ -69,11 +88,20 @@ implements Vanishable {
         if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
             return TypedActionResult.fail(itemStack);
         }
-        if (EnchantmentHelper.getRiptide(itemStack) > 0 && !user.isTouchingWaterOrRain()) {
-            return TypedActionResult.fail(itemStack);
-        }
         user.setCurrentHand(hand);
         return TypedActionResult.consume(itemStack);
+    }
+
+    @Override
+    public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
+        Material material = state.getMaterial();
+        if (state.isOf(Blocks.COBWEB) || material == Material.WOOL) {
+            return 15.0f;
+        }
+        if (material == Material.PLANT || material == Material.REPLACEABLE_PLANT || state.isIn(BlockTags.LEAVES) || material == Material.GOURD) {
+            return 1.5f;
+        }
+        return 1.0f;
     }
 
     @Override
@@ -92,7 +120,8 @@ implements Vanishable {
 
     @Override
     public boolean isSuitableFor(BlockState state) {
-        return state.isOf(Blocks.COBWEB);
+        Material material = state.getMaterial();
+        return state.isOf(Blocks.COBWEB) && material == Material.WOOL;
     }
 
     @Override
