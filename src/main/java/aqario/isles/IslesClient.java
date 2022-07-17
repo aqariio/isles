@@ -1,6 +1,8 @@
 package aqario.isles;
 
+import aqario.isles.client.model.AquariusEntityModel;
 import aqario.isles.client.model.ShurikenEntityModel;
+import aqario.isles.client.renderer.AquariusEntityRenderer;
 import aqario.isles.client.renderer.ShurikenEntityRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -13,11 +15,14 @@ import net.minecraft.util.Identifier;
 @Environment(EnvType.CLIENT)
 public class IslesClient implements ClientModInitializer {
 
+    public static final EntityModelLayer AQUARIUS = new EntityModelLayer(new Identifier(Isles.MODID, "aquarius"),"aquarius");
     public static final EntityModelLayer SHURIKEN = new EntityModelLayer(new Identifier(Isles.MODID, "shuriken"),"shuriken");
 
     @Override
     public void onInitializeClient() {
-        EntityRendererRegistry.register(Isles.SHURIKEN_ENTITY, (context) -> new ShurikenEntityRenderer(context));
+        EntityRendererRegistry.register(Isles.AQUARIUS_ENTITY, AquariusEntityRenderer::new);
+        EntityModelLayerRegistry.registerModelLayer(AQUARIUS, AquariusEntityModel::getTexturedModelData);
+        EntityRendererRegistry.register(Isles.SHURIKEN_ENTITY, ShurikenEntityRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(SHURIKEN, ShurikenEntityModel::getTexturedModelData);
     }
 }

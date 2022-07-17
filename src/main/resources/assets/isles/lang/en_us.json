@@ -1,5 +1,7 @@
 {
+  "item.isles.aquarius": "Aquarius",
   "item.isles.shuriken": "Shuriken",
+  "entity.isles.aquarius": "Aquarius",
   "entity.isles.shuriken": "Shuriken",
   "isles.subtitles.item.shuriken.hit": "Shuriken hits"
 }

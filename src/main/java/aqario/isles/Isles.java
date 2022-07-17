@@ -1,6 +1,9 @@
 package aqario.isles;
 
+import aqario.isles.entity.AquariusEntity;
 import aqario.isles.entity.ShurikenEntity;
+import aqario.isles.item.AquariusItem;
+import aqario.isles.item.PrismarineMaterial;
 import aqario.isles.item.ShurikenItem;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
@@ -24,6 +27,7 @@ public class Isles implements ModInitializer {
 
 
 	// Items
+	public static final Item AQUARIUS = registerItem("aquarius", new AquariusItem(PrismarineMaterial.PRISMARINE, 9, -2.9f, new FabricItemSettings().group(ItemGroup.COMBAT)));
 	public static final Item SHURIKEN = registerItem("shuriken", new ShurikenItem(ToolMaterials.NETHERITE, -3, -1.5f, new FabricItemSettings().group(ItemGroup.COMBAT).fireproof()));
 
 	// Register
@@ -33,6 +37,12 @@ public class Isles implements ModInitializer {
 
 
 	// Entities
+	public static final EntityType<AquariusEntity> AQUARIUS_ENTITY = Registry.register(
+			Registry.ENTITY_TYPE, new Identifier(MODID, "aquarius"),
+			FabricEntityTypeBuilder.<AquariusEntity>create(SpawnGroup.MISC, AquariusEntity::new)
+					.dimensions(EntityDimensions.fixed(0.6F, 0.6F))
+					.trackRangeBlocks(4).trackedUpdateRate(20)
+					.build());
 	public static final EntityType<ShurikenEntity> SHURIKEN_ENTITY = Registry.register(
 			Registry.ENTITY_TYPE, new Identifier(MODID, "shuriken"),
 			FabricEntityTypeBuilder.<ShurikenEntity>create(SpawnGroup.MISC, ShurikenEntity::new)
@@ -46,5 +56,6 @@ public class Isles implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		ITEM_SHURIKEN_HIT = Registry.register(Registry.SOUND_EVENT, ITEM_SHURIKEN_HIT.getId(), ITEM_SHURIKEN_HIT);
 	}
 }
